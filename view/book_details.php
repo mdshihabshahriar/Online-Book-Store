@@ -35,7 +35,7 @@ include "../control/book_details_control.php";
         </a>
 
         <a href="cart.php">
-            🛒 Cart
+            🛒 Cart (<?php echo $cart_count; ?>)
         </a>
 
     </div>
@@ -44,7 +44,6 @@ include "../control/book_details_control.php";
 
 
 <div class="details-container">
-
 
     <!-- Image -->
 
@@ -56,7 +55,6 @@ include "../control/book_details_control.php";
         >
 
     </div>
-
 
     <!-- Information -->
 
@@ -119,7 +117,6 @@ include "../control/book_details_control.php";
 
         </p>
 
-
         <?php if ($book["stock"] > 0) { ?>
 
         <form
@@ -158,7 +155,6 @@ include "../control/book_details_control.php";
     </div>
 
 </div>
-
 
 </body>
 

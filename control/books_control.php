@@ -6,6 +6,7 @@ $mydb = new mydb();
 
 $conobj = $mydb->openConn();
 
+$cart_count = $mydb->getCartCount($conobj);
 
 // Search
 if (isset($_GET["search"]) && !empty($_GET["search"])) {
@@ -23,7 +24,6 @@ if (isset($_GET["search"]) && !empty($_GET["search"])) {
         $search,
         $filter
     );
-
 
 // Show all books
 } else {

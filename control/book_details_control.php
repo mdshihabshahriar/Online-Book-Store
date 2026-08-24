@@ -6,6 +6,7 @@ $mydb = new mydb();
 
 $conobj = $mydb->openConn();
 
+$cart_count = $mydb->getCartCount($conobj);
 
 if (isset($_GET["id"])) {
 

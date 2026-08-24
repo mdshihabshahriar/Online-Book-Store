@@ -10,7 +10,6 @@ include "../control/books_control.php";
 
 <head>
 
-
     <title>Online Book Store</title>
     <link rel="stylesheet" href="../css/books.css">
 
@@ -34,8 +33,7 @@ include "../control/books_control.php";
         </a>
 
         <a href="cart.php" class="cart">
-            🛒 Cart
-            (<span id="cart-count">0</span>)
+            🛒 Cart (<?php echo $cart_count; ?>)
         </a>
 
     </div>

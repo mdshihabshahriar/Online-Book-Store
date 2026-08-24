@@ -7,7 +7,6 @@ class mydb
         return new mysqli("localhost", "root", "", "online_book_store");
     }
 
-    // Get all books
     function getAllBooks($conn)
     {
         $sql = "SELECT books.*, categories.name AS category_name
@@ -19,19 +18,21 @@ class mydb
         return $conn->query($sql);
     }
 
-    // Get single book by ID
+
     function getBookById($conn, $id)
     {
+        $id = (int)$id;
+
         $sql = "SELECT books.*, categories.name AS category_name
                 FROM books
                 LEFT JOIN categories
                 ON books.category_id = categories.id
-                WHERE books.id = '$id'";
+                WHERE books.id = $id";
 
         return $conn->query($sql);
     }
 
-    // Search books
+
     function searchBooks($conn, $search, $filter)
     {
         $search = $conn->real_escape_string($search);
@@ -64,24 +65,25 @@ class mydb
         return $conn->query($sql);
     }
 
-
-    // Add book to cart
+    // Add to cart
     function addToCart($conn, $book_id, $quantity)
     {
-        // Check whether book already exists in cart
-        $check = "SELECT * FROM cart WHERE book_id = '$book_id'";
+        $book_id = (int)$book_id;
+        $quantity = (int)$quantity;
+
+        $check = "SELECT * FROM cart WHERE book_id = $book_id";
         $result = $conn->query($check);
 
         if ($result->num_rows > 0) {
 
             $sql = "UPDATE cart
                     SET quantity = quantity + $quantity
-                    WHERE book_id = '$book_id'";
+                    WHERE book_id = $book_id";
 
         } else {
 
             $sql = "INSERT INTO cart (book_id, quantity)
-                    VALUES ('$book_id', '$quantity')";
+                    VALUES ($book_id, $quantity)";
         }
 
         return $conn->query($sql);
@@ -91,7 +93,15 @@ class mydb
     // Get cart items
     function getCartItems($conn)
     {
-        $sql = "SELECT cart.*, books.title, books.price, books.image_path
+        $sql = "SELECT 
+                    cart.id AS cart_id,
+                    cart.book_id,
+                    cart.quantity,
+                    cart.added_at,
+                    books.title,
+                    books.price,
+                    books.image_path,
+                    books.stock
                 FROM cart
                 INNER JOIN books
                 ON cart.book_id = books.id
@@ -100,22 +110,45 @@ class mydb
         return $conn->query($sql);
     }
 
-
-    // Remove cart item
-    function removeFromCart($conn, $id)
+    // Get total cart value
+    function getCartCount($conn)
     {
-        $sql = "DELETE FROM cart WHERE id = '$id'";
+        $sql = "SELECT SUM(quantity) AS total
+                FROM cart";
+
+        $result = $conn->query($sql);
+
+        $row = $result->fetch_assoc();
+
+        return $row["total"] ?? 0;
+    }
+
+
+    // Update quantity
+    function updateCart($conn, $cart_id, $quantity)
+    {
+        $cart_id = (int)$cart_id;
+        $quantity = (int)$quantity;
+
+        if ($quantity <= 0) {
+            return false;
+        }
+
+        $sql = "UPDATE cart
+                SET quantity = $quantity
+                WHERE id = $cart_id";
 
         return $conn->query($sql);
     }
 
 
-    // Update cart quantity
-    function updateCart($conn, $id, $quantity)
+    // Remove item
+    function removeFromCart($conn, $cart_id)
     {
-        $sql = "UPDATE cart
-                SET quantity = '$quantity'
-                WHERE id = '$id'";
+        $cart_id = (int)$cart_id;
+
+        $sql = "DELETE FROM cart
+                WHERE id = $cart_id";
 
         return $conn->query($sql);
     }
