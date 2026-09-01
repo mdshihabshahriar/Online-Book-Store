@@ -11,7 +11,7 @@ class mydb
     {
         $sql = "SELECT books.*, categories.name AS category_name
                 FROM books
-                LEFT JOIN categories
+                INNER JOIN categories
                 ON books.category_id = categories.id
                 ORDER BY books.id DESC";
 
@@ -32,38 +32,42 @@ class mydb
         return $conn->query($sql);
     }
 
+    function searchBooks($conn,$search,$filter)
+{
+    $search = $conn->real_escape_string($search);
 
-    function searchBooks($conn, $search, $filter)
-    {
-        $search = $conn->real_escape_string($search);
+    if($filter=="title"){
 
-        if ($filter == "author") {
-
-            $sql = "SELECT books.*, categories.name AS category_name
-                    FROM books
-                    LEFT JOIN categories
-                    ON books.category_id = categories.id
-                    WHERE books.author LIKE '%$search%'";
-
-        } elseif ($filter == "category") {
-
-            $sql = "SELECT books.*, categories.name AS category_name
-                    FROM books
-                    LEFT JOIN categories
-                    ON books.category_id = categories.id
-                    WHERE categories.name LIKE '%$search%'";
-
-        } else {
-
-            $sql = "SELECT books.*, categories.name AS category_name
-                    FROM books
-                    LEFT JOIN categories
-                    ON books.category_id = categories.id
-                    WHERE books.title LIKE '%$search%'";
-        }
-
-        return $conn->query($sql);
+        $sql="SELECT books.*, categories.name AS category_name
+              FROM books
+              INNER JOIN categories
+              ON books.category_id = categories.id
+              WHERE books.title LIKE '%$search%'
+              ORDER BY books.id DESC";
     }
+
+    elseif($filter=="author"){
+
+        $sql="SELECT books.*, categories.name AS category_name
+              FROM books
+              INNER JOIN categories
+              ON books.category_id = categories.id
+              WHERE books.author LIKE '%$search%'
+              ORDER BY books.id DESC";
+    }
+
+    else{
+
+        $sql="SELECT books.*, categories.name AS category_name
+              FROM books
+              INNER JOIN categories
+              ON books.category_id = categories.id
+              WHERE categories.name LIKE '%$search%'
+              ORDER BY books.id DESC";
+    }
+
+    return $conn->query($sql);
+}
 
     // Add to cart
     function addToCart($conn, $book_id, $quantity)

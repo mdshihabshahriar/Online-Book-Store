@@ -1,24 +1,19 @@
 <?php
-
-include "../control/books_control.php";
-
+include("../control/books_control.php");
 ?>
 
 <!DOCTYPE html>
-
-<html lang="en">
+<html>
 
 <head>
 
-    <title>Online Book Store</title>
-    <link rel="stylesheet" href="../css/books.css">
+<title>Online Book Store</title>
+
+<link rel="stylesheet" href="../css/books.css">
 
 </head>
 
 <body>
-
-
-<!-- Navbar -->
 
 <header class="navbar">
 
@@ -28,12 +23,10 @@ include "../control/books_control.php";
 
     <div>
 
-        <a href="books.php">
-            Home
-        </a>
+        <a href="books.php">Home</a>
 
-        <a href="cart.php" class="cart">
-            🛒 Cart (<?php echo $cart_count; ?>)
+        <a href="cart.php">
+            Cart(<?php echo $cart_count; ?>)
         </a>
 
     </div>
@@ -41,178 +34,95 @@ include "../control/books_control.php";
 </header>
 
 
-<!-- Search -->
-
 <section class="search-section">
 
     <h1>Find Your Next Book</h1>
 
-    <form method="GET">
+    <div class="search-box">
 
-        <div class="search-box">
-
-            <input
-                type="text"
-                name="search"
-                placeholder="Search books..."
-                value="<?php
-                    if (isset($_GET["search"])) {
-                        echo htmlspecialchars($_GET["search"]);
-                    }
-                ?>"
-            >
-
-            <select name="filter">
-
-                <option value="title">
-                    Book Name
-                </option>
-
-                <option value="author">
-                    Author
-                </option>
-
-                <option value="category">
-                    Genre
-                </option>
-
-            </select>
-
-            <button type="submit">
-                Search
-            </button>
-
-        </div>
-
-    </form>
-
-</section>
+        <input
+            type="text"
+            id="mydata"
+            placeholder="Search books..."
+            onkeyup="myajax()"
+        >
 
 
-<!-- Books -->
+        <select id="filter" onchange="myajax()">
 
-<section class="books-section">
+            <option value="title">
+                Book Name
+            </option>
 
-    <h2>Available Books</h2>
+            <option value="author">
+                Author
+            </option>
 
-    <div class="book-grid">
+            <option value="category">
+                Genre
+            </option>
 
-        <?php
-
-        if ($result->num_rows > 0) {
-
-            while ($row = $result->fetch_assoc()) {
-
-        ?>
-
-        <div class="book-card">
-
-            <img
-                src="../<?php echo $row["image_path"]; ?>"
-                alt="<?php echo htmlspecialchars($row["title"]); ?>"
-            >
-
-            <h3>
-                <?php echo htmlspecialchars($row["title"]); ?>
-            </h3>
-
-            <p class="author">
-                By <?php echo htmlspecialchars($row["author"]); ?>
-            </p>
-
-            <p class="category">
-                <?php echo htmlspecialchars($row["category_name"]); ?>
-            </p>
-
-            <p class="price">
-                ৳<?php echo number_format($row["price"], 2); ?>
-            </p>
-
-            <p class="stock">
-
-                <?php
-
-                if ($row["stock"] > 0) {
-
-                    echo "In Stock: " . $row["stock"];
-
-                } else {
-
-                    echo "Out of Stock";
-
-                }
-
-                ?>
-
-            </p>
-
-
-            <a
-                class="details-btn"
-                href="book_details.php?id=<?php echo $row["id"]; ?>"
-            >
-                Details
-            </a>
-
-
-            <?php if ($row["stock"] > 0) { ?>
-
-                <form
-                    action="../control/cart_control.php"
-                    method="POST"
-                    style="display:inline;"
-                >
-
-                    <input
-                        type="hidden"
-                        name="book_id"
-                        value="<?php echo $row["id"]; ?>"
-                    >
-
-                    <input
-                        type="hidden"
-                        name="quantity"
-                        value="1"
-                    >
-
-                    <button
-                        type="submit"
-                        name="add_to_cart"
-                        class="cart-btn"
-                    >
-                        Add to Cart
-                    </button>
-
-                </form>
-
-            <?php } ?>
-
-
-        </div>
-
-        <?php
-
-            }
-
-        } else {
-
-        ?>
-
-            <div class="no-books">
-
-                <h3>
-                    No books found.
-                </h3>
-
-            </div>
-
-        <?php } ?>
+        </select>
 
     </div>
 
 </section>
 
+<section class="books-section">
+
+    <h2>Available Books</h2>
+
+    <div class="book-grid" id="myprint">
+
+        <?php
+
+        while($row=$result->fetch_assoc()){
+
+        ?>
+
+        <div class="book-card">
+
+            <img src="../<?php echo $row["image_path"]; ?>">
+
+            <h3>
+                <?php
+                echo htmlspecialchars($row["title"]);
+                ?>
+            </h3>
+
+            <p>
+                By
+                <?php echo htmlspecialchars($row["author"]); ?>
+            </p>
+
+            <p>
+                <?php
+                echo htmlspecialchars($row["category_name"]);
+                ?>
+            </p>
+
+            <p class="price">
+                ৳<?php echo $row["price"]; ?>
+            </p>
+
+            <a
+                href="book_details.php?id=<?php echo $row["id"]; ?>"
+                class="details-btn"
+            >
+                Details
+            </a>
+
+        </div>
+
+        <?php
+        }
+        ?>
+
+    </div>
+
+</section>
+
+<script src="../js/myjs.js"></script>
 
 </body>
-
 </html>
