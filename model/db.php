@@ -156,6 +156,99 @@ class mydb
 
         return $conn->query($sql);
     }
+
+    
+    function getCartItems($conn, $user_id) {
+        $sql = "SELECT cart.id AS cart_id, cart.quantity, books.id AS book_id,
+                books.title, books.author, books.price, books.stock
+                FROM cart
+                INNER JOIN books ON cart.book_id = books.id
+                WHERE cart.user_id='$user_id'";
+        return $conn->query($sql);
+    }
+
+    function clearCart($conn, $user_id) {
+        $sql = "DELETE FROM cart WHERE user_id='$user_id'";
+        return $conn->query($sql);
+    }
+
+    // ---------- books (used directly on checkout since cart isn't Task 4) ----------
+
+    function getAvailableBooks($conn) {
+        $sql = "SELECT id, title, author, price, stock FROM books WHERE stock > 0 ORDER BY title";
+        return $conn->query($sql);
+    }
+
+    function getBookById($conn, $book_id) {
+        $sql = "SELECT * FROM books WHERE id='$book_id'";
+        return $conn->query($sql);
+    }
+
+    // ---------- orders ----------
+
+    function createOrder($conn, $user_id, $total_amount, $payment_method) {
+        $sql = "INSERT INTO orders (user_id, total_amount, status, payment_method)
+                VALUES ('$user_id', '$total_amount', 'pending', '$payment_method')";
+        if ($conn->query($sql)) {
+            return $conn->insert_id;
+        }
+        return false;
+    }
+
+    function createOrderItem($conn, $order_id, $book_id, $quantity, $unit_price) {
+        $sql = "INSERT INTO order_items (order_id, book_id, quantity, unit_price)
+                VALUES ('$order_id', '$book_id', '$quantity', '$unit_price')";
+        return $conn->query($sql);
+    }
+
+    function reduceStock($conn, $book_id, $quantity) {
+        $sql = "UPDATE books SET stock = stock - '$quantity' WHERE id='$book_id'";
+        return $conn->query($sql);
+    }
+
+    function getOrdersByUser($conn, $user_id) {
+        $sql = "SELECT * FROM orders WHERE user_id='$user_id' ORDER BY order_date DESC";
+        return $conn->query($sql);
+    }
+
+    function getOrderItems($conn, $order_id) {
+        $sql = "SELECT order_items.*, books.title, books.author
+                FROM order_items
+                INNER JOIN books ON order_items.book_id = books.id
+                WHERE order_items.order_id='$order_id'";
+        return $conn->query($sql);
+    }
+
+    function getOrderById($conn, $order_id) {
+        $sql = "SELECT * FROM orders WHERE id='$order_id'";
+        return $conn->query($sql);
+    }
+
+    function getAllOrders($conn) {
+        $sql = "SELECT orders.*, users.name AS customer_name, users.email
+                FROM orders
+                INNER JOIN users ON orders.user_id = users.id
+                ORDER BY orders.order_date DESC";
+        return $conn->query($sql);
+    }
+
+    function updateOrderStatus($conn, $order_id, $status) {
+        $sql = "UPDATE orders SET status='$status' WHERE id='$order_id'";
+        return $conn->query($sql);
+    }
+
+    // ---------- payments ----------
+
+    function createPayment($conn, $order_id, $amount, $payment_method, $transaction_id) {
+        $sql = "INSERT INTO payments (order_id, amount, payment_method, transaction_id)
+                VALUES ('$order_id', '$amount', '$payment_method', '$transaction_id')";
+        return $conn->query($sql);
+    }
+
+}
+
+?>
+
 }
 
 ?>
