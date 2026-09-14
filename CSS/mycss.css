@@ -1,0 +1,367 @@
+* { box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f2f4f8;
+    color: #24292f;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- Navbar ---------- */
+
+.navbar {
+    background: linear-gradient(90deg, #1f3c88, #2c6dd5);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 40px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.navbar .brand {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #e8edff;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.nav-links a:hover { color: #fff; text-decoration: underline; }
+
+.who { color: #cfe0ff; font-size: 14px; }
+
+.logout-link {
+    background: rgba(255,255,255,0.15);
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+/* ---------- Page shell ---------- */
+
+.page {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 40px 60px;
+}
+
+.page-narrow {
+    max-width: 700px;
+}
+
+.page-title {
+    font-size: 28px;
+    color: #1f3c88;
+    margin-bottom: 6px;
+}
+
+.note {
+    background: #fff8e1;
+    border-left: 4px solid #f5a623;
+    padding: 10px 16px;
+    font-size: 14px;
+    color: #7a5c00;
+    border-radius: 4px;
+    margin-bottom: 24px;
+}
+
+/* ---------- Login page ---------- */
+
+.auth-wrap {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.auth-card {
+    background: #fff;
+    padding: 40px;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-card h1 {
+    text-align: center;
+    color: #1f3c88;
+    margin-top: 0;
+}
+
+/* ---------- Panels / cards ---------- */
+
+.panel {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.panel h2 {
+    margin-top: 0;
+    font-size: 19px;
+    color: #1f3c88;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* ---------- Checkout layout ---------- */
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+@media (max-width: 850px) {
+    .checkout-layout { grid-template-columns: 1fr; }
+}
+
+.book-list { display: flex; flex-direction: column; gap: 12px; }
+
+.book-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ececec;
+    border-radius: 10px;
+    padding: 14px 18px;
+    transition: box-shadow .15s;
+}
+
+.book-row:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+
+.book-title { font-weight: 600; font-size: 16px; }
+.book-author { color: #666; font-size: 13px; margin: 2px 0; }
+.book-price { color: #1f3c88; font-weight: 600; }
+.stock { color: #888; font-weight: normal; font-size: 12px; }
+
+.qty-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qty-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ccc;
+    background: #f7f7f9;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.qty-btn:hover { background: #eef2ff; }
+
+.qty-input {
+    width: 48px;
+    text-align: center;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* ---------- Forms ---------- */
+
+label { display: block; margin-top: 16px; font-weight: 600; font-size: 14px; }
+
+input[type="text"], input[type="email"], input[type="password"],
+input[type="number"], textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border: 1px solid #d3d8e0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #2c6dd5;
+    box-shadow: 0 0 0 3px rgba(44,109,213,0.15);
+}
+
+textarea { min-height: 70px; resize: vertical; }
+
+button, input[type="submit"], .btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 22px;
+    background: #2c6dd5;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+}
+
+button:hover { background: #245aad; }
+button:disabled { background: #aab4c4; cursor: not-allowed; }
+
+.error { color: #c0392b; font-size: 13px; min-height: 16px; margin: 4px 0 0; }
+
+.demo-box {
+    margin-top: 20px;
+    background: #eef4ff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.demo-box ul { margin: 6px 0 0; padding-left: 18px; }
+
+/* ---------- Option pills (delivery / payment) ---------- */
+
+.option-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.pill-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: normal;
+    font-size: 14px;
+    background: #f5f7fb;
+    border: 1px solid #dde3ee;
+    border-radius: 20px;
+    padding: 8px 14px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.pill-label input { width: auto; margin: 0; }
+
+.payment-fields {
+    background: #f9fafc;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 12px;
+}
+
+/* ---------- Order summary ---------- */
+
+.summary-box {
+    margin-top: 20px;
+    border-top: 2px dashed #e0e4ec;
+    padding-top: 14px;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 4px 0;
+    color: #555;
+}
+
+.total-line {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f3c88;
+    border-top: 1px solid #eee;
+    margin-top: 6px;
+    padding-top: 10px;
+}
+
+/* ---------- Tables ---------- */
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.cart-table th, .cart-table td {
+    text-align: left;
+    padding: 10px 8px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.cart-table th { color: #555; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+
+/* ---------- Confirmation ---------- */
+
+.confirmation-box {
+    text-align: center;
+    background: #fff;
+    padding: 40px;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.confirmation-box .cart-table { text-align: left; }
+
+/* ---------- Order cards (profile / admin) ---------- */
+
+.order-card {
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+}
+
+.order-card-header { margin-bottom: 8px; font-size: 15px; }
+
+.status {
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.status-pending { background: #fff3cd; color: #856404; }
+.status-confirmed { background: #d1ecf1; color: #0c5460; }
+.status-shipped { background: #d4edda; color: #155724; }
+.status-delivered { background: #d6d8ff; color: #333399; }
+
+.status-select {
+    display: inline-block;
+    width: auto;
+    padding: 6px 10px;
+    margin: 6px 8px 0 6px;
+}
+
+.update-status-btn {
+    display: inline-block;
+    width: auto;
+    padding: 8px 16px;
+    margin-top: 6px;
+    font-size: 13px;
+}
+
+.status-msg { margin-left: 10px; font-size: 13px; color: #2c6dd5; }
